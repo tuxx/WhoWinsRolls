@@ -9,8 +9,14 @@ WhoWinsRollsDB = WhoWinsRollsDB or {
     targetPlayer = "",
     wins = 0,
     losses = 0,
+    ties = 0,
     totalRolls = 0,
 }
+
+-- Migration: ensure ties field exists for existing databases
+if WhoWinsRollsDB.ties == nil then
+    WhoWinsRollsDB.ties = 0
+end
 
 -- Local variables
 local targetPlayer = WhoWinsRollsDB.targetPlayer
@@ -38,6 +44,7 @@ local function SaveData()
     WhoWinsRollsDB.targetPlayer = targetPlayer
     WhoWinsRollsDB.wins = WhoWinsRollsDB.wins
     WhoWinsRollsDB.losses = WhoWinsRollsDB.losses
+    WhoWinsRollsDB.ties = WhoWinsRollsDB.ties
     WhoWinsRollsDB.totalRolls = WhoWinsRollsDB.totalRolls
 end
 
@@ -63,6 +70,7 @@ local function ShowStats()
     Print("Statistics vs " .. targetPlayer .. ":")
     Print("  Wins: " .. WhoWinsRollsDB.wins)
     Print("  Losses: " .. WhoWinsRollsDB.losses)
+    Print("  Ties: " .. WhoWinsRollsDB.ties)
     Print("  Total Rolls: " .. WhoWinsRollsDB.totalRolls)
     Print("  Win Rate: " .. string.format("%.1f", winRate) .. "%")
 end
@@ -77,6 +85,7 @@ local function SetTargetPlayer(name)
         if normalizedName ~= currentTarget then
             WhoWinsRollsDB.wins = 0
             WhoWinsRollsDB.losses = 0
+            WhoWinsRollsDB.ties = 0
             WhoWinsRollsDB.totalRolls = 0
         end
 
@@ -93,6 +102,7 @@ local function ResetStats()
     UpdateTargetPlayer() -- Ensure we have the latest saved data
     WhoWinsRollsDB.wins = 0
     WhoWinsRollsDB.losses = 0
+    WhoWinsRollsDB.ties = 0
     WhoWinsRollsDB.totalRolls = 0
     SaveData()
     Print("Statistics reset.")
@@ -137,6 +147,7 @@ local function ProcessRollResults()
             WhoWinsRollsDB.losses = WhoWinsRollsDB.losses + 1
             Print("LOSS! You rolled " .. myRoll .. " vs " .. targetPlayer .. "'s " .. targetRoll)
         else
+            WhoWinsRollsDB.ties = WhoWinsRollsDB.ties + 1
             Print("TIE! Both rolled " .. myRoll)
         end
         SaveData()
