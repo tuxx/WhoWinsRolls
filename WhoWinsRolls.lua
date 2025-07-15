@@ -23,6 +23,11 @@ local currentRollSession = {} -- Track current roll session
 local currentItemRollSession = {} -- Track current item roll session
 local isItemRoll = false -- Track if current session is for item rolls
 
+-- Function to update local targetPlayer from saved data
+local function UpdateTargetPlayer()
+    targetPlayer = WhoWinsRollsDB.targetPlayer
+end
+
 -- Function to print messages
 local function Print(msg)
     print("|cFF00FF00[WhoWinsRolls]|r " .. msg)
@@ -31,6 +36,9 @@ end
 -- Function to save data
 local function SaveData()
     WhoWinsRollsDB.targetPlayer = targetPlayer
+    WhoWinsRollsDB.wins = WhoWinsRollsDB.wins
+    WhoWinsRollsDB.losses = WhoWinsRollsDB.losses
+    WhoWinsRollsDB.totalRolls = WhoWinsRollsDB.totalRolls
 end
 
 -- Function to normalize player name (case-insensitive)
@@ -41,6 +49,7 @@ end
 
 -- Function to display statistics
 local function ShowStats()
+    UpdateTargetPlayer() -- Ensure we have the latest saved data
     if targetPlayer == "" then
         Print("No target player set. Use /whowinsrolls <name> to set a target.")
         return
@@ -60,6 +69,7 @@ end
 
 -- Function to set target player
 local function SetTargetPlayer(name)
+    UpdateTargetPlayer() -- Ensure we have the latest saved data
     if name and name ~= "" then
         local normalizedName = NormalizePlayerName(name)
         local currentTarget = NormalizePlayerName(targetPlayer)
@@ -80,6 +90,7 @@ local function SetTargetPlayer(name)
 end
 
 local function ResetStats()
+    UpdateTargetPlayer() -- Ensure we have the latest saved data
     WhoWinsRollsDB.wins = 0
     WhoWinsRollsDB.losses = 0
     WhoWinsRollsDB.totalRolls = 0
@@ -111,6 +122,7 @@ local function TryParseItemRoll(message)
 end
 
 local function ProcessRollResults()
+    UpdateTargetPlayer() -- Ensure we have the latest saved data
     if targetPlayer == "" then return end
     local rollSession = isItemRoll and currentItemRollSession or currentRollSession
     local myRoll = rollSession[NormalizePlayerName(UnitName("player"))]
@@ -204,3 +216,4 @@ SlashCmdList["WHOWINSROLLS"] = function(msg)
 end
 
 Print("WhoWinsRolls loaded. Type /whowinsrolls <name> to start tracking rolls against a player.")
+UpdateTargetPlayer()
