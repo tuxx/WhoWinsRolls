@@ -1,0 +1,8 @@
+## Interface: 11507
+## Title: Who Wins Rolls
+## Notes: Track roll wins and losses against a specific player
+## Author: Your Name
+## Version: 1.0.0
+## SavedVariables: WhoWinsRollsDB
+
+WhoWinsRolls.lua 
