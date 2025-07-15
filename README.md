@@ -4,6 +4,19 @@
 
 ---
 
+## 📷 Screenshots
+
+**Statistics & Normal Roll**
+
+<img width="50%" alt="2025-07-15_23-55-44" src="https://github.com/user-attachments/assets/1efad2c3-96bd-48b3-ad75-eee00a9d07ad" />
+
+**Item Roll**
+
+<img width="50%" alt="" src="https://github.com/user-attachments/assets/a4c5bda0-c925-4097-8baf-1dc11d2a149e" />
+
+
+---
+
 ## 💔 Features
 
 - 🎯 Tracks roll stats against **one nemesis** at a time (revenge is personal).
